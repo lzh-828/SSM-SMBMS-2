@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.mapper.UserMapper">
+    <!--根据id删除用户-->
+    <delete id="deleteUserById">
+        delete from smbms_user where id=#{uid}
+    </delete>
+
+    <!--更新密码-->
+    <!--<update id="modifyPasswordById">
+        update smbms_user
+            set userPassword = #{newpassword}
+                where id = #{id}
+    </update>-->
+
+    <!--Integer getUserCount(); 查询总记录数-->
+    <select id="getUserCount" resultType="int">
+        select count(*)
+            from smbms_user
+                <where>
+                    <if test="queryname!=null and queryname!=''">
+                       and userName like CONCAT('%',#{queryname},'%')
+                    </if>
+                    <if test="queryUserRole!=null and queryUserRole != 0">
+                        and userRole = #{queryUserRole}
+                    </if>
+                </where>
+
+    </select>
+    <!--List<SmbmsUser> findUserPage(int startIndex, Integer pageSize); 查询分页的结果集-->
+    <select id="findUserPage" resultType="SmbmsUser">
+        select  u.*,r.roleName userRoleName
+            from smbms_user u
+                inner join smbms_role r
+                    on r.id = u.userRole
+                <trim prefix="where" prefixOverrides="and" >
+
+                    <if test="queryname!=null and queryname!=''">
+                        and userName like CONCAT('%',#{queryname},'%')
+                    </if>
+                    <if test="queryUserRole!=null and queryUserRole != 0">
+                        and userRole = #{queryUserRole}
+                    </if>
+                </trim>
+                    limit #{startIndex},#{pageSize}
+    </select>
+
+    <!--List<SmbmsRole> findRoleList(); 查询角色列表-->
+    <select id="findRoleList" resultType="SmbmsRole">
+        select * from smbms_role
+    </select>
+
+    <!--int addUserSave(SmbmsUser user);-->
+    <insert id="addUserSave" parameterType="smbmsUser">
+        insert into smbms_user(userCode,userName,userPassword,gender,
+                               birthday,phone,address,userRole,createdBy,creationDate,idPicPath)
+            values (#{userCode},#{userName},#{userPassword},#{gender},
+                    #{birthday},#{phone},#{address},#{userRole},#{createdBy},#{creationDate},#{idPicPath})
+    </insert>
+    <!--SmbmsUser findUserByUserCode(String userCode);-->
+    <select id="findUserByUserCode" parameterType="string" resultType="smbmsUser">
+        select * from smbms_user where userCode=#{userCode}
+    </select>
+
+    <!--SmbmsUser findUserById(Integer id);-->
+    <select id="findUserById" parameterType="int" resultType="SmbmsUser">
+        select * from smbms_user where id=#{id}
+    </select>
+</mapper>

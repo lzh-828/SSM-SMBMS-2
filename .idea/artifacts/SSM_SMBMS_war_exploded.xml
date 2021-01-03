@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="SSM-SMBMS:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/SSM_SMBMS_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="SSM-SMBMS/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="SSM-SMBMS" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="aopalliance-1.0" />
+          <element id="library" level="project" name="jsp-api" />
+          <element id="library" level="project" name="javax.persistence" />
+          <element id="library" level="project" name="commons-fileupload-1.2.2" />
+          <element id="library" level="project" name="fastjson-1.2.13" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
